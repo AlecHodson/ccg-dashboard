@@ -1,0 +1,26 @@
+name: Update CCG Dashboard
+
+on:
+  schedule:
+    - cron: '0 6 * * 2,3,4,5'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Build and deploy dashboard
+        env:
+          FAMLY_TOKEN: ${{ secrets.FAMLY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python build_dashboard.py
