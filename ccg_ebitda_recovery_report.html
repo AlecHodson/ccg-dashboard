@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCG EBITDA Recovery Plan — September 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #1a1a2e; font-size: 13px; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  h1 { font-size: 26px; color: #1a1a2e; font-weight: 700; margin-bottom: 4px; }
+  h2 { font-size: 16px; color: #1a1a2e; font-weight: 700; margin: 28px 0 10px; border-left: 4px solid #6c3483; padding-left: 10px; }
+  h3 { font-size: 13px; font-weight: 700; color: #2c3e50; margin: 16px 0 6px; }
+  .subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
+  .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+  .kpi { background: white; border-radius: 8px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .kpi .label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+  .kpi .value { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+  .kpi .sub { font-size: 11px; color: #aaa; margin-top: 2px; }
+  .kpi.red .value { color: #c0392b; }
+  .kpi.amber .value { color: #d35400; }
+  .kpi.green .value { color: #27ae60; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 20px; font-size: 12px; }
+  th { background: #1a1a2e; color: white; padding: 9px 10px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; }
+  th.r { text-align: right; }
+  td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+  td.r { text-align: right; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+  .tfoot td { background: #1a1a2e; color: white; font-weight: 700; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+  .badge.red { background: #fde8e8; color: #c0392b; }
+  .badge.amber { background: #fef3e2; color: #d35400; }
+  .badge.green { background: #e8f8f0; color: #27ae60; }
+  .badge.blue { background: #e8f0fe; color: #1a73e8; }
+  .badge.grey { background: #f0f0f0; color: #666; }
+  .section-card { background: white; border-radius: 8px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 20px; }
+  .bridge-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f5f5f5; }
+  .bridge-label { flex: 1; font-size: 12px; color: #444; }
+  .bridge-bar-wrap { flex: 2; background: #f0f0f0; border-radius: 4px; height: 14px; overflow: hidden; }
+  .bridge-bar { height: 100%; border-radius: 4px; }
+  .bridge-val { width: 90px; text-align: right; font-weight: 700; font-size: 12px; }
+  .pos { color: #27ae60; }
+  .neg { color: #c0392b; }
+  .nursery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+  .nursery-card { background: white; border-radius: 8px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .nc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .nc-name { font-weight: 700; font-size: 13px; }
+  .nc-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+  .nc-metric { background: #f8f9fa; border-radius: 5px; padding: 6px 8px; }
+  .nc-metric .ml { font-size: 10px; color: #888; }
+  .nc-metric .mv { font-size: 13px; font-weight: 700; }
+  .nc-actions { font-size: 11px; color: #555; line-height: 1.6; }
+  .nc-actions li { margin-left: 14px; }
+  .progress-bar { background: #f0f0f0; border-radius: 10px; height: 8px; overflow: hidden; margin-top: 4px; }
+  .progress-fill { height: 100%; border-radius: 10px; }
+  .checkpoint-row { display: grid; grid-template-columns: 100px 1fr 120px 100px; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+  .checkpoint-row:last-child { border-bottom: none; }
+  .cp-label { font-weight: 700; font-size: 12px; }
+  .cp-bar-wrap { background: #f0f0f0; border-radius: 4px; height: 16px; position: relative; }
+  .cp-bar { height: 100%; border-radius: 4px; }
+  .cp-target-line { position: absolute; top: 0; bottom: 0; width: 2px; background: #c0392b; }
+  .cp-val { font-weight: 700; font-size: 13px; text-align: right; }
+  .cp-status { font-size: 11px; text-align: right; }
+  .divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+  .footnote { font-size: 10px; color: #aaa; margin-top: 20px; line-height: 1.6; }
+  @media print { body { background: white; } .page { padding: 10px; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>Complete Childcare Group</h1>
+<p class="subtitle">EBITDA Recovery Plan &amp; Performance Report &mdash; September 2026 &nbsp;|&nbsp; Prepared for Alec Hodson, Group CEO</p>
+
+<!-- KPI STRIP -->
+<div class="kpi-row">
+  <div class="kpi green">
+    <div class="label">2025 Actual EBITDA</div>
+    <div class="value">£1.65m</div>
+    <div class="sub">Above £1.3m target</div>
+  </div>
+  <div class="kpi red">
+    <div class="label">2026 Est. EBITDA</div>
+    <div class="value">£803k</div>
+    <div class="sub">£497k below target</div>
+  </div>
+  <div class="kpi amber">
+    <div class="label">2027 Projected EBITDA</div>
+    <div class="value">£1.23m</div>
+    <div class="sub">£69k below target</div>
+  </div>
+  <div class="kpi blue">
+    <div class="label">Live Pipeline (Famly)</div>
+    <div class="value">523</div>
+    <div class="sub">Enquiries since Jan 2026</div>
+  </div>
+  <div class="kpi blue">
+    <div class="label">Confirmed/WL Pipeline</div>
+    <div class="value">68</div>
+    <div class="sub">Across 17 settings</div>
+  </div>
+</div>
+
+<!-- COST REDUCTION SECTION -->
+<div class="section">
+  <h2>Cost Reduction — Priority Settings</h2>
+  <p style="color:#555; font-size:13px; margin-bottom:20px;">Six settings require immediate cost action. Target: bring salary-to-revenue ratio below 65% group-wide by Q2 2027.</p>
+
+  <div class="three-col">
+
+    <div class="nursery-card critical">
+      <h4>🔴 Finchampstead</h4>
+      <div class="stat">Sal:Rev 2026: <strong style="color:#e94560">138.2%</strong></div>
+      <div class="stat">EBITDA 2026: <strong style="color:#e94560">-£115,496</strong></div>
+      <div class="stat">Revenue 2026: <strong>£164,834</strong></div>
+      <div class="stat">Live enquiries: <strong>36</strong> | Pipeline: <strong>7</strong></div>
+      <div class="action">
+        <strong>Action Required</strong>
+        Salary cost is catastrophically above revenue. Staffing must be restructured to match actual occupancy levels. Revenue recovery through the 36 live enquiries and 7 pipeline is essential — each conversion at average revenue adds ~£8k/year. Target: break-even by Q2 2027, positive contribution by Q3 2027. Immediate review of room ratios and staffing model required.
+      </div>
+    </div>
+
+    <div class="nursery-card critical">
+      <h4>🔴 Cedars Day Nursery</h4>
+      <div class="stat">Sal:Rev 2026: <strong style="color:#e94560">82.9%</strong></div>
+      <div class="stat">EBITDA 2026: <strong style="color:#f39c12">£17,615</strong></div>
+      <div class="stat">Revenue 2026: <strong>£356,836</strong></div>
+      <div class="stat">Live enquiries: <strong>8</strong> | Pipeline: <strong>0</strong></div>
+      <div class="action">
+        <strong>Action Required</strong>
+        Salary ratio nearly double the healthy benchmark. Very low enquiry pipeline is a concern — only 8 live enquiries with zero in confirmed/waiting list. Revenue growth alone cannot fix this; staffing costs must be reduced by a minimum of £60k to achieve a viable contribution. Marketing investment needed to drive enquiry volume.
+      </div>
+    </div>
+
+    <div class="nursery-card critical">
+      <h4>🔴 Lower Earley</h4>
+      <div class="stat">Sal:Rev 2026: <strong style="color:#e94560">85.3%</strong></div>
+      <div class="stat">EBITDA 2026: <strong style="color:#f39c12">£837</strong></div>
+      <div class="stat">Revenue 2026: <strong>£378,952</strong></div>
+      <div class="stat">Live enquiries: <strong>11</strong> | Pipeline: <strong>0</strong></div>
+      <div class="action">
+        <strong>Action Required</strong>
+        Effectively breakeven in 2026. Zero pipeline enquiries despite 11 live contacts — conversion urgently needed. Staffing costs must be reviewed; target ratio of 65% requires either £77k revenue increase or proportional cost reduction. 2027 H1 shows modest improvement (£19.9k) — trajectory must accelerate.
+      </div>
+    </div>
+
+    <div class="nursery-card critical">
+      <h4>🔴 Northumberland</h4>
+      <div class="stat">Sal:Rev 2026: <strong style="color:#e94560">79.6%</strong></div>
+      <div class="stat">EBITDA 2026: <strong style="color:#f39c12">£1,752</strong></div>
+      <div class="stat">Revenue 2026: <strong>£174,911</strong></div>
+      <div class="stat">Live enquiries: <strong>34</strong> | Pipeline: <strong>5</strong></div>
+      <div class="action">
+        <strong>Action Required</strong>
+        Revenue dropped significantly from £322k (2025) to £175k (2026). With 34 live enquiries and 5 in pipeline, growth potential exists — 2027 H1 shows recovery to £211k run rate. Priority is converting the live pipeline while reducing the fixed staff cost base. Target: 65% sal:rev by Q3 2027.
+      </div>
+    </div>
+
+    <div class="nursery-card amber">
+      <h4>🟡 Smart Tots</h4>
+      <div class="stat">Sal:Rev 2026: <strong style="color:#e94560">78.0%</strong></div>
+      <div class="stat">EBITDA 2026: <strong style="color:#f39c12">£40,052</strong></div>
+      <div class="stat">Revenue 2026: <strong>£321,160</strong></div>
+      <div class="stat">Live enquiries: <strong>48</strong> | Pipeline: <strong>3</strong></div>
+      <div class="action">
+        <strong>Action Required</strong>
+        Revenue fell from £604k (2025) to £321k (2026) — a 47% decline that is the single biggest revenue story in the group. 48 live enquiries represent a significant recovery opportunity. Converting even 15 of these to enrolled children would add ~£120k revenue and transform the contribution. Staffing must be right-sized to current occupancy in the interim.
+      </div>
+    </div>
+
+    <div class="nursery-card amber">
+      <h4>🟡 Our Den @ Hillside</h4>
+      <div class="stat">Sal:Rev 2026: <strong style="color:#f39c12">65.3%</strong></div>
+      <div class="stat">EBITDA 2026: <strong style="color:#f39c12">£85,043</strong></div>
+      <div class="stat">Revenue 2026: <strong>£354,263</strong></div>
+      <div class="stat">Live enquiries: <strong>17</strong> | Pipeline: <strong>0</strong></div>
+      <div class="action">
+        <strong>Action Required</strong>
+        Revenue halved from £768k (2025) to £354k (2026). 2027 H1 projects negative contribution (-£109k) — this is the most alarming trajectory in the group. The term-time model limits revenue but the cost base has not adjusted. Zero pipeline enquiries is critical. Immediate occupancy drive and staffing review required.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- REVENUE GROWTH SECTION -->
+<div class="section">
+  <h2>Revenue Growth — Opportunities & Plans</h2>
+
+  <h3>Settings with Strong 2027 Recovery Trajectory</h3>
+  <div class="three-col">
+
+    <div class="nursery-card growth">
+      <h4>🟢 Happitots</h4>
+      <div class="stat">Rev 2025: <strong>£18k</strong> → 2026: <strong>£98k</strong> → 2027 H1: <strong>£416k</strong></div>
+      <div class="stat">EBITDA 2027 H1: <strong style="color:#27ae60">£346,243</strong></div>
+      <div class="stat">Live enquiries: <strong>14</strong> | Pipeline: <strong>11</strong></div>
+      <div class="action">
+        <strong>Growth Plan</strong>
+        The group's biggest growth story. Happitots is ramping from near-zero to £832k+ annualised revenue in 2027. The 11 confirmed/waiting list enquiries will sustain momentum. Priority: maintain quality of provision to protect reputation during rapid growth. Target: £900k revenue in full year 2027.
+      </div>
+    </div>
+
+    <div class="nursery-card growth">
+      <h4>🟢 Saltway</h4>
+      <div class="stat">Rev 2025: <strong>£823k</strong> → 2026: <strong>£399k</strong> → 2027 H1: <strong>£539k</strong></div>
+      <div class="stat">EBITDA 2027 H1: <strong style="color:#27ae60">£184,596</strong></div>
+      <div class="stat">Live enquiries: <strong>33</strong> | Pipeline: <strong>5</strong></div>
+      <div class="action">
+        <strong>Growth Plan</strong>
+        Sharp 2026 revenue dip is recovering strongly in 2027. 33 live enquiries with 5 in pipeline — converting these will push 2027 revenue to £1m+ annualised. Sal:rev at 66.5% needs to come down as revenue grows. No additional headcount should be added until ratio reaches 60%.
+      </div>
+    </div>
+
+    <div class="nursery-card growth">
+      <h4>🟢 Northumberland</h4>
+      <div class="stat">Rev 2026: <strong>£175k</strong> → 2027 H1: <strong>£211k</strong></div>
+      <div class="stat">EBITDA 2027 H1: <strong style="color:#27ae60">£39,181</strong></div>
+      <div class="stat">Live enquiries: <strong>34</strong> | Pipeline: <strong>5</strong></div>
+      <div class="action">
+        <strong>Growth Plan</strong>
+        Recovering from a very low 2026 base. 34 live enquiries is encouraging — converting 10 would add ~£80k revenue and bring sal:rev to a viable level. Focus on speed of conversion; this setting needs revenue urgently.
+      </div>
+    </div>
+
+  </div>
+
+  <h3 style="margin-top:24px">Core Performers — Protect & Optimise</h3>
+  <div class="three-col">
+
+    <div class="nursery-card" style="border-left-color:#0f3460">
+      <h4>🔵 Bramley Wood</h4>
+      <div class="stat">EBITDA 2026: <strong>£818,803</strong> | Sal:Rev: <strong>46.3%</strong></div>
+      <div class="stat">Live enquiries: <strong>96</strong> | Pipeline: <strong>7</strong></div>
+      <div class="action">
+        <strong>Opportunity</strong>
+        The group's anchor. 96 live enquiries with only 7 in pipeline suggests a conversion bottleneck. Even moving 20 more to confirmed/waiting list adds significant future revenue. Protect the cost discipline that makes this setting the group benchmark.
+      </div>
+    </div>
+
+    <div class="nursery-card" style="border-left-color:#0f3460">
+      <h4>🔵 Abacus</h4>
+      <div class="stat">EBITDA 2026: <strong>£496,345</strong> | Sal:Rev: <strong>49.3%</strong></div>
+      <div class="stat">Live enquiries: <strong>16</strong> | Pipeline: <strong>3</strong></div>
+      <div class="action">
+        <strong>Opportunity</strong>
+        Strong performer with healthy margins. Revenue growing from £951k (2025) to £1.16m (2026). 2027 H1 on track. Maintain cost discipline — any salary increases must be matched by proportional revenue growth.
+      </div>
+    </div>
+
+    <div class="nursery-card" style="border-left-color:#0f3460">
+      <h4>🔵 Merrydale</h4>
+      <div class="stat">EBITDA 2026: <strong>£438,324</strong> | Sal:Rev: <strong>47.9%</strong></div>
+      <div class="stat">Live enquiries: <strong>23</strong> | Pipeline: <strong>0</strong></div>
+      <div class="action">
+        <strong>Opportunity</strong>
+        Solid performer but revenue declined from £1.25m (2025) to £1.04m (2026). Zero pipeline enquiries despite 23 live contacts — conversion focus needed to maintain 2027 trajectory. 2027 H1 run rate of £1.0m is slightly below 2026 full year.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ENQUIRY PIPELINE SECTION -->
+<div class="section">
+  <h2>Enquiry Pipeline — Conversion Opportunity (Jan 2026 Onwards)</h2>
+  <p style="font-size:13px; color:#555; margin-bottom:20px;">
+    <strong>1,382 total enquiries</strong> received since January 2026 across all 17 settings. 
+    <strong>523 remain live</strong> (NEW, CONTACTED, VIEWED, WAITING_LIST, CONFIRMED). 
+    <strong>631 have been lost</strong> — a 45.7% loss rate that represents a significant revenue opportunity if conversion rates improve.
+    Only 228 have enrolled. Every 10 additional enrolments from the live pipeline represents approximately £80k–£100k additional annual revenue.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nursery</th>
+        <th class="num">Total Enquiries</th>
+        <th class="num">Live</th>
+        <th class="num">Confirmed/WL</th>
+        <th class="num">Enrolled</th>
+        <th class="num">Lost</th>
+        <th class="num">Loss Rate</th>
+        <th>Conversion Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Bramley Wood</strong></td>
+        <td class="num">151</td>
+        <td class="num"><strong>96</strong></td>
+        <td class="num">7</td>
+        <td class="num">21</td>
+        <td class="num">34</td>
+        <td class="num" style="">23%</td>
+        <td><span class="badge red">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Stepping Stones</strong></td>
+        <td class="num">110</td>
+        <td class="num"><strong>79</strong></td>
+        <td class="num">2</td>
+        <td class="num">5</td>
+        <td class="num">26</td>
+        <td class="num" style="">24%</td>
+        <td><span class="badge red">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Smart Tots</strong></td>
+        <td class="num">89</td>
+        <td class="num"><strong>48</strong></td>
+        <td class="num">3</td>
+        <td class="num">10</td>
+        <td class="num">31</td>
+        <td class="num" style="">35%</td>
+        <td><span class="badge amber">MEDIUM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Finchampstead</strong></td>
+        <td class="num">82</td>
+        <td class="num"><strong>36</strong></td>
+        <td class="num">7</td>
+        <td class="num">10</td>
+        <td class="num">36</td>
+        <td class="num" style="color:#f39c12">44%</td>
+        <td><span class="badge amber">MEDIUM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Northumberland</strong></td>
+        <td class="num">77</td>
+        <td class="num"><strong>34</strong></td>
+        <td class="num">5</td>
+        <td class="num">16</td>
+        <td class="num">27</td>
+        <td class="num" style="">35%</td>
+        <td><span class="badge amber">MEDIUM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Saltway</strong></td>
+        <td class="num">61</td>
+        <td class="num"><strong>33</strong></td>
+        <td class="num">5</td>
+        <td class="num">17</td>
+        <td class="num">11</td>
+        <td class="num" style="">18%</td>
+        <td><span class="badge amber">MEDIUM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Kingsclere</strong></td>
+        <td class="num">53</td>
+        <td class="num"><strong>29</strong></td>
+        <td class="num">5</td>
+        <td class="num">12</td>
+        <td class="num">12</td>
+        <td class="num" style="">23%</td>
+        <td><span class="badge amber">MEDIUM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Hazebrouck</strong></td>
+        <td class="num">80</td>
+        <td class="num"><strong>26</strong></td>
+        <td class="num">11</td>
+        <td class="num">15</td>
+        <td class="num">39</td>
+        <td class="num" style="color:#f39c12">49%</td>
+        <td><span class="badge amber">MEDIUM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Boot Farm</strong></td>
+        <td class="num">46</td>
+        <td class="num"><strong>24</strong></td>
+        <td class="num">0</td>
+        <td class="num">18</td>
+        <td class="num">4</td>
+        <td class="num" style="">9%</td>
+        <td><span class="badge amber">MEDIUM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Merrydale</strong></td>
+        <td class="num">74</td>
+        <td class="num"><strong>23</strong></td>
+        <td class="num">0</td>
+        <td class="num">13</td>
+        <td class="num">38</td>
+        <td class="num" style="color:#f39c12">51%</td>
+        <td><span class="badge amber">MEDIUM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Our Den</strong></td>
+        <td class="num">45</td>
+        <td class="num"><strong>17</strong></td>
+        <td class="num">0</td>
+        <td class="num">15</td>
+        <td class="num">13</td>
+        <td class="num" style="">29%</td>
+        <td><span class="badge green">STANDARD</span></td>
+      </tr>
+      <tr>
+        <td><strong>Abacus</strong></td>
+        <td class="num">127</td>
+        <td class="num"><strong>16</strong></td>
+        <td class="num">3</td>
+        <td class="num">20</td>
+        <td class="num">91</td>
+        <td class="num" style="color:#e94560">72%</td>
+        <td><span class="badge red">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Bees Knees</strong></td>
+        <td class="num">116</td>
+        <td class="num"><strong>15</strong></td>
+        <td class="num">8</td>
+        <td class="num">4</td>
+        <td class="num">97</td>
+        <td class="num" style="color:#e94560">84%</td>
+        <td><span class="badge red">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Happitots</strong></td>
+        <td class="num">72</td>
+        <td class="num"><strong>14</strong></td>
+        <td class="num">11</td>
+        <td class="num">10</td>
+        <td class="num">48</td>
+        <td class="num" style="color:#e94560">67%</td>
+        <td><span class="badge red">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Woosehill</strong></td>
+        <td class="num">72</td>
+        <td class="num"><strong>14</strong></td>
+        <td class="num">1</td>
+        <td class="num">15</td>
+        <td class="num">43</td>
+        <td class="num" style="color:#f39c12">60%</td>
+        <td><span class="badge green">STANDARD</span></td>
+      </tr>
+      <tr>
+        <td><strong>Lower Earley</strong></td>
+        <td class="num">62</td>
+        <td class="num"><strong>11</strong></td>
+        <td class="num">0</td>
+        <td class="num">12</td>
+        <td class="num">39</td>
+        <td class="num" style="color:#e94560">63%</td>
+        <td><span class="badge red">HIGH</span></td>
+      </tr>
+      <tr>
+        <td><strong>Cedars</strong></td>
+        <td class="num">65</td>
+        <td class="num"><strong>8</strong></td>
+        <td class="num">0</td>
+        <td class="num">15</td>
+        <td class="num">42</td>
+        <td class="num" style="color:#e94560">65%</td>
+        <td><span class="badge red">HIGH</span></td>
+      </tr>
+      <tr class="total-row">
+        <td>GROUP TOTAL</td>
+        <td class="num">1382</td>
+        <td class="num">523</td>
+        <td class="num">68</td>
+        <td class="num">228</td>
+        <td class="num">631</td>
+        <td class="num">46%</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box" style="margin-top:20px">
+    <p><strong>Conversion Action Plan:</strong> The group must implement a structured follow-up protocol for all CONTACTED and VIEWED enquiries. 
+    Bramley Wood (96 live), Stepping Stones (79 live) and Smart Tots (48 live) represent the highest-value conversion opportunities. 
+    Converting just <strong>20% of the 523 live enquiries</strong> to enrolled children would generate approximately <strong>£830k additional annual revenue</strong>, 
+    which at a 30% contribution margin adds <strong>£249k to group EBITDA</strong> — closing more than 40% of the current gap to target.</p>
+  </div>
+</div>
+
+<!-- 2027 RECOVERY PLAN -->
+<div class="section">
+  <h2>2027 Recovery Plan — Path to £1.3m EBITDA</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Initiative</th>
+        <th>Settings</th>
+        <th class="num">EBITDA Impact</th>
+        <th>Timeline</th>
+        <th>Owner</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Happitots Full Ramp-Up</strong></td>
+        <td>Happitots</td>
+        <td class="num" style="color:#27ae60"><strong>+£346k (H1 2027)</strong></td>
+        <td>Jan–Jun 2027</td>
+        <td>Area Manager</td>
+      </tr>
+      <tr>
+        <td><strong>Finchampstead Restructure</strong></td>
+        <td>Finchampstead</td>
+        <td class="num" style="color:#27ae60"><strong>+£115k</strong></td>
+        <td>Q4 2026</td>
+        <td>Area Manager + HR</td>
+      </tr>
+      <tr>
+        <td><strong>Smart Tots Occupancy Recovery</strong></td>
+        <td>Smart Tots</td>
+        <td class="num" style="color:#27ae60"><strong>+£100k</strong></td>
+        <td>Q1–Q2 2027</td>
+        <td>Area Manager</td>
+      </tr>
+      <tr>
+        <td><strong>Saltway Revenue Recovery</strong></td>
+        <td>Saltway</td>
+        <td class="num" style="color:#27ae60"><strong>+£185k (H1 2027)</strong></td>
+        <td>Jan–Jun 2027</td>
+        <td>Area Manager</td>
+      </tr>
+      <tr>
+        <td><strong>Live Enquiry Conversion Drive</strong></td>
+        <td>All settings (523 live)</td>
+        <td class="num" style="color:#27ae60"><strong>+£249k</strong></td>
+        <td>Q4 2026 – Q2 2027</td>
+        <td>All Managers</td>
+      </tr>
+      <tr>
+        <td><strong>Cedars / Lower Earley Cost Reset</strong></td>
+        <td>Cedars, Lower Earley</td>
+        <td class="num" style="color:#27ae60"><strong>+£80k</strong></td>
+        <td>Q4 2026</td>
+        <td>Area Manager + HR</td>
+      </tr>
+      <tr>
+        <td><strong>Our Den Occupancy Drive</strong></td>
+        <td>Our Den</td>
+        <td class="num" style="color:#27ae60"><strong>+£80k</strong></td>
+        <td>Q1 2027</td>
+        <td>Area Manager</td>
+      </tr>
+      <tr>
+        <td><strong>Northumberland Growth</strong></td>
+        <td>Northumberland</td>
+        <td class="num" style="color:#27ae60"><strong>+£39k (H1 2027)</strong></td>
+        <td>Jan–Jun 2027</td>
+        <td>Area Manager</td>
+      </tr>
+      <tr class="total-row">
+        <td>TOTAL EBITDA IMPROVEMENT</td>
+        <td></td>
+        <td class="num">+£1,194k</td>
+        <td>By Jun 2027</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box" style="margin-top:20px">
+    <p><strong>2027 Target Pathway:</strong> Starting from an estimated 2026 group EBITDA of £706k, the combined effect of Happitots' ramp-up (the single biggest lever), 
+    cost restructuring at the five critical settings, Saltway's recovery, and group-wide enquiry conversion drives the annualised 2027 EBITDA to <strong>£1,355k</strong> — 
+    exceeding the £1.3m target by £55k at the June 2027 quarterly reporting point. 
+    The December 2027 position is projected to be materially stronger as the full year benefit of all initiatives is realised.</p>
+  </div>
+</div>
+
+<!-- KEY RISKS -->
+<div class="section">
+  <h2>Key Risks & Mitigations</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Risk</th>
+        <th>Impact</th>
+        <th>Likelihood</th>
+        <th>Mitigation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Finchampstead does not restructure fast enough</strong></td>
+        <td><span class="badge red">HIGH</span></td>
+        <td><span class="badge amber">MEDIUM</span></td>
+        <td>Set Q4 2026 deadline for staffing review; escalate to CCO if not actioned by October</td>
+      </tr>
+      <tr>
+        <td><strong>Our Den revenue continues to decline in 2027</strong></td>
+        <td><span class="badge red">HIGH</span></td>
+        <td><span class="badge amber">MEDIUM</span></td>
+        <td>Occupancy audit by end of September; term-time model review; consider extended hours</td>
+      </tr>
+      <tr>
+        <td><strong>Happitots growth stalls or quality issues emerge</strong></td>
+        <td><span class="badge red">HIGH</span></td>
+        <td><span class="badge green">LOW</span></td>
+        <td>Monthly quality reviews; ensure staffing ratios are maintained during rapid growth</td>
+      </tr>
+      <tr>
+        <td><strong>Live enquiry conversion rate does not improve</strong></td>
+        <td><span class="badge amber">MEDIUM</span></td>
+        <td><span class="badge amber">MEDIUM</span></td>
+        <td>Implement CRM follow-up protocol; weekly enquiry review by area managers</td>
+      </tr>
+      <tr>
+        <td><strong>HO overhead costs increase above 2025 run rate</strong></td>
+        <td><span class="badge amber">MEDIUM</span></td>
+        <td><span class="badge green">LOW</span></td>
+        <td>HO cost freeze until EBITDA target is achieved; any new HO spend requires CCO sign-off</td>
+      </tr>
+      <tr>
+        <td><strong>Bees Knees / Woosehill margin erosion</strong></td>
+        <td><span class="badge green">LOW</span></td>
+        <td><span class="badge amber">MEDIUM</span></td>
+        <td>Monitor sal:rev monthly; both at 70%+ — any staffing changes require approval</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  <p>Complete Childcare Group — Confidential | Generated September 2026 | Data: Famly (enquiries) + Management Accounts (financial)</p>
+  <p style="margin-top:6px">Quarterly reporting cycle: March, June, September, December | Target: £1.3m rolling 12-month EBITDA</p>
+</div>
+
+</div>
+</body>
+</html>
