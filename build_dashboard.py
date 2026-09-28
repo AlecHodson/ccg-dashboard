@@ -49,13 +49,16 @@ for _ in range(30):
     cursor_arg = ', cursor: "' + cursor + '"' if cursor else ""
     query = "{ inquiries { listBySiteIdsPaginated(siteIds: " + site_ids_str + ", pageSize: 500" + cursor_arg + ") { results { id siteId status createdAt } next } } }"
     resp = requests.post(endpoint, json={"query": query}, headers=famly_headers)
-    page = resp.json()["data"]["inquiries"]["listBySiteIdsPaginated"]
+    resp_json = resp.json()
+    if "errors" in resp_json or "data" not in resp_json:
+        raise RuntimeError(f"Famly API error (check FAMLY_TOKEN secret): {resp_json}")
+    page = resp_json["data"]["inquiries"]["listBySiteIdsPaginated"]
     results = page["results"]
     all_results.extend(results)
     cursor = page.get("next")
     if results:
         oldest = min(datetime.fromisoformat(r["createdAt"].replace("Z","")) for r in results)
-        if oldest < cutoff_june and not cursor:
+        if oldest < cutoff_june:
             break
     if not cursor:
         break
